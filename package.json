@@ -1,0 +1,35 @@
+{
+    "author": "mrodrig",
+    "name": "memo-cache",
+    "description": "A memoization and caching library for NodeJS",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+    	"url": "http://github.com/mrodrig/memo-cache.git"
+    },
+    "main": "./lib/memo-cache.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --reporter spec"
+    },
+    "keywords": [
+        "memoization",
+        "memoize",
+        "memo",
+        "cache",
+        "caching",
+        "function cache",
+        "node cache"
+    ],
+    "dependencies": {
+    	"underscore": "1.6.0"
+    },
+    "devDependencies": {
+        "mocha": "~1.14.0",
+        "should": "~2.0.2",
+        "async": "~0.2.9"
+    },
+    "engines": {
+    	"node": "*"
+    },
+    "license": "MIT"
+}
