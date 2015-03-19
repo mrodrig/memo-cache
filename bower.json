@@ -1,0 +1,19 @@
+{
+  "name": "memo-cache",
+  "version": "1.0.10",
+  "homepage": "https://github.com/mrodrig/memo-cache",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "1.6.0"
+  }
+}
