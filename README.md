@@ -1,9 +1,9 @@
 # Node Memoization/Caching Library
 
-[![Build Status](https://travis-ci.org/mrodrig/tag-cloud.svg?branch=master)](https://travis-ci.org/mrodrig/memo-cache
+[![Build Status](https://travis-ci.org/mrodrig/memo-cache.svg?branch=master)](https://travis-ci.org/mrodrig/memo-cache)
 ![David - Dependency Checker Icon](https://david-dm.org/mrodrig/memo-cache.png "tag-cloud Dependency Status")
-[![NPM version](http://img.shields.io/npm/dm/tag-cloud.svg)](https://www.npmjs.org/package/memo-cache)
-[![NPM version](https://img.shields.io/npm/v/tag-cloud.svg)](https://www.npmjs.org/package/memo-cache)
+[![NPM version](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
+[![NPM version](https://img.shields.io/npm/v/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 
 This node module will take an array of tags and counts and generate a Tag/Word Cloud.
 
