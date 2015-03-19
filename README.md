@@ -5,7 +5,7 @@
 [![NPM version](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 [![NPM version](https://img.shields.io/npm/v/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 
-This node module will take an array of tags and counts and generate a Tag/Word Cloud.
+A memoization and caching library for NodeJS.
 
 ## Installation
 
