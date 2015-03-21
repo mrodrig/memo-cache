@@ -137,6 +137,23 @@ memoCache.cache.options('myCache'); // => { cloneValues: boolean, maxSize: Numbe
 myCache.options(); // => { cloneValues: boolean, maxSize: Number, memoHashFunction: Function }
 ```
 
+####Memoization:
+#####memoCache.memoize(function, options)
+* ```cacheName``` String - name of the cache
+* ```options``` Object - options for the cache, specifying any of the following:
+ * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
+ * ```maxSize``` Integer - maximum number of keys to store in this cache; if null, then unlimited [Default: null]
+ * ```memoHashFunction``` Function - used to map the input arguments to a String. The result of this function becomes the key for the function result value
+
+```javascript
+require memoCache = require('memo-cache');
+var myFunction = function (aString) { console.log('cache miss!'); return aString; };
+
+var myFunctionMemoized = memoCache.memoize(myFunction, {maxSize: 10});
+myFunctionMemoized('testing'); // => 'testing' (Prints 'cache miss!' to the console)
+myFunctionMemoized('testing'); // => 'testing' (Does not print 'cache miss!')
+```
+
 ## Tests
 
 *No tests are currently implemented while this module is in development*
