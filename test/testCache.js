@@ -71,7 +71,7 @@ var cacheTests = function () {
         describe('Cache Functions', function () {
             beforeEach(function () {
                 testCache = memoCache.cache.create('testCache');
-                optsCache = memoCache.cache.create('testCache', customOptions);
+                optsCache = memoCache.cache.create('optsCache', customOptions);
             });
 
             describe('set and get', function () {
@@ -154,6 +154,168 @@ var cacheTests = function () {
                 it('should return false if the cache has no value at the key', function (done) {
                     var tmp = testCache.exists('nonExistentKey');
                     tmp.should.equal(tmp, false);
+                    done();
+                });
+            });
+
+            describe('size', function () {
+                it('should read a size of 0 before any cache modifications', function (done) {
+                    // Test library functions
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    // Test cache functions
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    done();
+                });
+
+                it('should read the correct size when items are added', function (done) {
+                    // Test library functions
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    memoCache.cache.set('testCache', 'testKey', 'testValue');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(1);
+                    // Test cache functions
+                    tmp = testCache.size();
+                    tmp.should.equal(1);
+                    testCache.set('testKey2', 'testValue2');
+                    tmp = testCache.size();
+                    tmp.should.equal(2);
+                    done();
+                });
+
+                it('should read the correct size after the cache is cleared', function (done) {
+                    // Test library functions
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    memoCache.cache.set('testCache', 'testKey', 'testValue');
+                    memoCache.cache.set('testCache', 'testKey2', 'testValue2');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(2);
+                    memoCache.cache.clear('testCache');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    // Test cache functions
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    testCache.set('testKey', 'testValue');
+                    testCache.set('testKey2', 'testValue2');
+                    tmp = testCache.size();
+                    tmp.should.equal(2);
+                    testCache.clear();
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    done();
+                });
+
+                it('should add 100 items and read the correct size - via library functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        memoCache.cache.set('testCache', num.toString(), num.toString());
+                    });
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(NUM_ITERATIONS);
+                    done();
+                });
+
+                it('should add 100 items and read the correct size - via cache functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = testCache.size('testCache');
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        testCache.set(num.toString(), num.toString());
+                    });
+                    tmp = testCache.size('testCache');
+                    tmp.should.equal(NUM_ITERATIONS);
+                    done();
+                })
+            });
+
+            describe('clear', function () {
+                it('should clear an empty cache and have a size of 0', function (done) {
+                    // Test library functions
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    memoCache.cache.clear('testCache');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    // Test cache functions
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    testCache.clear();
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    done();
+                });
+
+                it('should clear a non-empty cache and have a size of 0', function (done) {
+                    // Test library functions
+                    var tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    memoCache.cache.set('testCache', 'testKey', 'testValue');
+                    memoCache.cache.set('testCache', 'testKey2', 'testValue2');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(2);
+                    memoCache.cache.clear('testCache');
+                    tmp = memoCache.cache.size('testCache');
+                    tmp.should.equal(0);
+                    tmp = memoCache.cache.get('testCache', 'testKey');
+                    assert.equal(tmp, null);
+                    tmp = memoCache.cache.get('testCache', 'testKey2');
+                    assert.equal(tmp, null);
+                    // Test cache functions
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    testCache.set('testKey', 'testValue');
+                    testCache.set('testKey2', 'testValue2');
+                    tmp = testCache.size();
+                    tmp.should.equal(2);
+                    testCache.clear();
+                    tmp = testCache.size();
+                    tmp.should.equal(0);
+                    tmp = testCache.get('testKey');
+                    assert.equal(tmp, null);
+                    tmp = testCache.get('testKey2');
+                    assert.equal(tmp, null);
+                    done();
+                });
+            });
+
+            describe('options', function () {
+                it('should retrieve the options from a cache that does exist', function (done) {
+                    var tmp = memoCache.cache.options('testCache');
+                    JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
+                    tmp = testCache.options();
+                    JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
+                    done();
+                });
+
+                it('should allow options to be modified by reference - via library functions', function (done) {
+                    var tmp = memoCache.cache.options('testCache');
+                    JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
+                    tmp.cloneValues = true;
+                    tmp.maxSize = 5;
+                    tmp = memoCache.cache.options('testCache');
+                    JSON.stringify(tmp).should.equal(JSON.stringify(customOptions));
+                    done();
+                });
+
+                it('should allow options to be modified by reference - via cache functions', function (done) {
+                    var tmp = testCache.options();
+                    JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
+                    tmp.cloneValues = true;
+                    tmp.maxSize = 5;
+                    tmp = testCache.options();
+                    JSON.stringify(tmp).should.equal(JSON.stringify(customOptions));
+                    done();
+                });
+
+                it('should return null if the cache does not exist', function (done) {
+                    var tmp = memoCache.cache.options('cacheThatDoesntExist');
+                    assert.equal(tmp, null);
                     done();
                 });
             });
