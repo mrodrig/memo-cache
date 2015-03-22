@@ -156,8 +156,6 @@ myFunctionMemoized('testing'); // => 'testing' (Does not print 'cache miss!')
 
 ## Tests
 
-*No tests are currently implemented while this module is in development*
-
 ```bash
 $ npm test
 ```
