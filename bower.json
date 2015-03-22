@@ -1,6 +1,6 @@
 {
   "name": "memo-cache",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "homepage": "https://github.com/mrodrig/memo-cache",
   "moduleType": [
     "node"

@@ -1,7 +1,7 @@
 var cacheTests = require('./testCache');
-    //memoTests  = require('./testMemo');
+    memoTests  = require('./testMemoize');
 
 describe('memo-cache Module', function() {
     cacheTests.runTests();
-    //memoTests.runTests();
+    memoTests.runTests();
 });

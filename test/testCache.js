@@ -3,7 +3,17 @@ var should = require('should'),
     _ = require('underscore'),
     memoCache,
     testCache,
-    optsCache;
+    lruCache;
+
+// From stackoverflow, for LRU testing purposes
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 
 var defaultOptions = {
         cloneValues : false, // Should values be cloned before storing and before returning them to the caller
@@ -39,6 +49,12 @@ var cacheTests = function () {
         describe('Cache Creation', function () {
             it('should create a cache using the default options', function (done) {
                 var myCache = memoCache.cache.create('myCache');
+                myCache.should.have.property('set');
+                myCache.should.have.property('get');
+                myCache.should.have.property('exists');
+                myCache.should.have.property('clear');
+                myCache.should.have.property('size');
+                myCache.should.have.property('options');
                 (typeof myCache).should.equal('object');
                 (typeof myCache.set).should.equal('function');
                 (typeof myCache.get).should.equal('function');
@@ -46,14 +62,17 @@ var cacheTests = function () {
                 (typeof myCache.clear).should.equal('function');
                 (typeof myCache.size).should.equal('function');
                 (typeof myCache.options).should.equal('function');
-                var options = memoCache.cache.options('myCache');
-                JSON.stringify(options).should.equal(JSON.stringify(defaultOptions));
-                (typeof options.memoHashFunction).should.equal('function');
                 done();
             });
 
             it('should create a cache with the specified options', function (done) {
                 var myCache = memoCache.cache.create('myCache', customOptions);
+                myCache.should.have.property('set');
+                myCache.should.have.property('get');
+                myCache.should.have.property('exists');
+                myCache.should.have.property('clear');
+                myCache.should.have.property('size');
+                myCache.should.have.property('options');
                 (typeof myCache).should.equal('object');
                 (typeof myCache.set).should.equal('function');
                 (typeof myCache.get).should.equal('function');
@@ -61,21 +80,18 @@ var cacheTests = function () {
                 (typeof myCache.clear).should.equal('function');
                 (typeof myCache.size).should.equal('function');
                 (typeof myCache.options).should.equal('function');
-                var options = memoCache.cache.options('myCache');
-                JSON.stringify(options).should.equal(JSON.stringify(customOptions));
-                (typeof options.memoHashFunction).should.equal('function');
                 done();
             });
         });
 
         describe('Cache Functions', function () {
             beforeEach(function () {
-                testCache = memoCache.cache.create('testCache');
-                optsCache = memoCache.cache.create('optsCache', customOptions);
+                testCache = memoCache.cache.create('testCache'); // defaultOptions
+                lruCache = memoCache.cache.create('lruCache', customOptions);
             });
 
             describe('set and get', function () {
-                it('should set and get a value in the cache - using memoCache.cache', function (done) {
+                it('should set and get a value in the cache - via library functions', function (done) {
                     var tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = memoCache.cache.get('testCache', 'testKey');
@@ -83,7 +99,7 @@ var cacheTests = function () {
                     done();
                 });
 
-                it('should set and get a value in the cache - using returned cache functions', function (done) {
+                it('should set and get a value in the cache - via cache functions', function (done) {
                     var tmp = testCache.set('testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = testCache.get('testKey');
@@ -123,7 +139,7 @@ var cacheTests = function () {
                     done();
                 });
 
-                it('should get the value via cache functions when set via library functions', function (done) {
+                it('should get the value via cache functions when set - via library functions', function (done) {
                     var tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = testCache.get('testKey');
@@ -131,11 +147,97 @@ var cacheTests = function () {
                     done();
                 });
 
-                it('should get the value via library functions when set via cache functions', function (done) {
+                it('should get the value via library functions when set - via cache functions', function (done) {
                     var tmp = testCache.set('testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = memoCache.cache.get('testCache', 'testKey');
                     tmp.should.equal('testValue');
+                    done();
+                });
+
+                it('should clone the values returned - set - via library functions', function (done) {
+                    // When cloning:
+                    var tmp = memoCache.cache.set('lruCache', 'testKey', {test:'value'});
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+                    tmp.badValue = 'fail'; // try modifying the cached object
+                    tmp = memoCache.cache.get('lruCache', 'testKey');
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+
+                    // When not cloning, the cache can be modified:
+                    var tmp = memoCache.cache.set('testCache', 'testKey', {test:'value'});
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+                    tmp.badValue = 'fail'; // try modifying the cached object
+                    tmp = memoCache.cache.get('testCache', 'testKey');
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value', badValue : 'fail'}));
+
+                    done();
+                });
+
+                it('should clone the values returned - set - via cache functions', function (done) {
+                    // When cloning:
+                    var tmp = lruCache.set('testKey', {test:'value'});
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+                    tmp.badValue = 'fail'; // try modifying the cached object
+                    tmp = lruCache.get('testKey');
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+
+                    // When not cloning, the cache can be modified:
+                    var tmp = testCache.set('testKey', {test:'value'});
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
+                    tmp.badValue = 'fail'; // try modifying the cached object
+                    tmp = testCache.get('testKey');
+                    JSON.stringify(tmp).should.equal(JSON.stringify({test:'value', badValue : 'fail'}));
+
+                    done();
+                });
+
+                it('should perform the LRU algorithm when the maxSize is exceeded - via library functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = memoCache.cache.size('lruCache');
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        memoCache.cache.set('lruCache', num.toString(), num.toString());
+                    });
+                    tmp = memoCache.cache.size('lruCache');
+                    tmp.should.equal(customOptions.maxSize);
+                    done();
+                });
+
+                it('should perform the LRU algorithm when the maxSize is exceeded - via cache functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = lruCache.size();
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        lruCache.set(num.toString(), num.toString());
+                    });
+                    tmp = lruCache.size();
+                    tmp.should.equal(customOptions.maxSize);
+                    done();
+                });
+
+                it('should perform the LRU algorithm with sleep when the maxSize is exceeded - via library functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = memoCache.cache.size('lruCache');
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        sleep(1); // sleep for 5 millisecond
+                        memoCache.cache.set('lruCache', num.toString(), num.toString());
+                    });
+                    tmp = memoCache.cache.size('lruCache');
+                    tmp.should.equal(customOptions.maxSize);
+                    done();
+                });
+
+                it('should perform the LRU algorithm with sleep when the maxSize is exceeded - via cache functions', function (done) {
+                    var NUM_ITERATIONS = 100;
+                    var tmp = lruCache.size();
+                    tmp.should.equal(0);
+                    _.each(_.range(NUM_ITERATIONS), function (num) {
+                        sleep(1); // sleep for 1 millisecond
+                        lruCache.set(num.toString(), num.toString());
+                    });
+                    tmp = lruCache.size();
+                    tmp.should.equal(customOptions.maxSize);
                     done();
                 });
             });
