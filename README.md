@@ -22,7 +22,7 @@ var memoCache = require('memo-cache');
 ### API
 
 ####Caching:
-#####memoCache.cache.createCache(cacheName, options)
+#####memoCache.cache.create(cacheName, options)
 * ```cacheName``` String - name of the cache
 * ```options``` Object - options for the cache, specifying any of the following:
  * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
