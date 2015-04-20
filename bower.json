@@ -5,6 +5,7 @@
   "moduleType": [
     "node"
   ],
+  "main":"lib/memo-cache.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
