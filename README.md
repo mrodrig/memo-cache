@@ -4,6 +4,7 @@
 ![David - Dependency Checker Icon](https://david-dm.org/mrodrig/memo-cache.png)
 [![Monthly Downloads](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 [![NPM version](https://img.shields.io/npm/v/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
+[![bitHound Score](https://www.bithound.io/github/mrodrig/memo-cache/badges/score.svg)](https://www.bithound.io/github/mrodrig/memo-cache)
 
 A memoization and caching library for NodeJS.
 

@@ -164,7 +164,7 @@ var cacheTests = function () {
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
 
                     // When not cloning, the cache can be modified:
-                    var tmp = memoCache.cache.set('testCache', 'testKey', {test:'value'});
+                    tmp = memoCache.cache.set('testCache', 'testKey', {test:'value'});
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
                     tmp.badValue = 'fail'; // try modifying the cached object
                     tmp = memoCache.cache.get('testCache', 'testKey');
@@ -182,7 +182,7 @@ var cacheTests = function () {
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
 
                     // When not cloning, the cache can be modified:
-                    var tmp = testCache.set('testKey', {test:'value'});
+                    tmp = testCache.set('testKey', {test:'value'});
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
                     tmp.badValue = 'fail'; // try modifying the cached object
                     tmp = testCache.get('testKey');
@@ -333,7 +333,7 @@ var cacheTests = function () {
                     tmp = testCache.size('testCache');
                     tmp.should.equal(NUM_ITERATIONS);
                     done();
-                })
+                });
             });
 
             describe('clear', function () {
