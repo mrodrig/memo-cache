@@ -2,7 +2,7 @@
     "author": "mrodrig",
     "name": "memo-cache",
     "description": "A memoization and caching library for NodeJS",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "repository": {
         "type": "git",
     	"url": "http://github.com/mrodrig/memo-cache.git"
@@ -24,8 +24,8 @@
     	"underscore": "~1.8.3"
     },
     "devDependencies": {
-        "mocha": "~2.3.3",
-        "should": "~7.1.0"
+        "mocha": "~2.3.4",
+        "should": "~7.1.1"
     },
     "engines": {
     	"node": "*"
