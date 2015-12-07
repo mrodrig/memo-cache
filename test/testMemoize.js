@@ -20,7 +20,16 @@ function sleep(milliseconds) {
     }
 }
 
-var customSingleOptions = {
+var hashFunction = function (prop, arg1) {
+            if (_.isNull(arg1)) {
+                return 'null';
+            } else if (arg1 !== undefined) {
+                arg1 = prop ? arg1[prop] : arg1;
+                return arg1.toString();
+            }
+            return '__noArgs';
+        },
+        customSingleOptions = {
         cloneValues : true, // Should values be cloned before storing and before returning them to the caller
         maxSize : 5, // The maximum number of keys that should be kept in the cache
         /**
@@ -28,14 +37,7 @@ var customSingleOptions = {
          * @param args Array argument array
          * @returns {string} key to be used to store the result in the function cache
          */
-        memoHashFunction: function (arg1) {
-            if (arg1 === null) {
-                return 'null';
-            } else if (arg1 !== undefined) {
-                return arg1.toString();
-            }
-            return '__noArgs';
-        }
+        memoHashFunction: _.partial(hashFunction, null)
     },
     customObjectOptions = {
         cloneValues : true, // Should values be cloned before storing and before returning them to the caller
@@ -45,14 +47,7 @@ var customSingleOptions = {
          * @param args Array argument array
          * @returns {string} key to be used to store the result in the function cache
          */
-        memoHashFunction: function (arg1) {
-            if (arg1 === null) {
-                return 'null';
-            } else if (arg1 !== undefined) {
-                return arg1.val.toString();
-            }
-            return '__noArgs';
-        }
+        memoHashFunction: _.partial(hashFunction, 'val')
     };
 
 var memoizeTests = function () {

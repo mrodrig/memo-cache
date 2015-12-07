@@ -35,9 +35,7 @@ var defaultOptions = {
          * @param args Array argument array
          * @returns {string} key to be used to store the result in the function cache
          */
-        memoHashFunction: function (args) {
-            return args.length ? args[0].toString() : '__noArgs';
-        }
+        memoHashFunction: defaultOptions.memoHashFunction
     };
 
 var cacheTests = function () {
