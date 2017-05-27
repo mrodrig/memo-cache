@@ -152,6 +152,18 @@ var cacheTests = function () {
                     tmp.should.equal('testValue');
                     done();
                 });
+                
+                it('getAll should get an entire cache', function (done) {
+                    testCache.set('testKey', 'testValue');
+                    var cache = testCache.getAll();
+                    cache == {testKey: 'testValue'};
+                    
+                    testCache.set('testKey2', 'testValue2');
+                    cache = memoCache.cache.getAll('testCache');
+                    cache == {'testKey': 'testValue', 'testKey2': 'testValue2'};
+                    
+                    done();
+                });
 
                 it('should clone the values returned - set - via library functions', function (done) {
                     // When cloning:

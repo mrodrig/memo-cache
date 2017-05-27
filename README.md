@@ -26,12 +26,13 @@ var memoCache = require('memo-cache');
 #####memoCache.cache.create(cacheName, options)
 * ```cacheName``` String - name of the cache
 * ```options``` Object - options for the cache, specifying any of the following:
- * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
- * ```maxSize``` Integer - maximum number of keys to store in this cache; if null, then unlimited [Default: null]
+* * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
+* * ```maxSize``` Integer - maximum number of keys to store in this cache; if null, then unlimited [Default: null]
 
 Return Value: An object with the following functions to modify the created cache.  Please note that these functions do not require the cacheName.
 * set     : function (key, value)
 * get     : function (key)
+* getAll  : function ()
 * exists  : function (key)
 * clear   : function ()
 * size    : function ()
@@ -43,6 +44,7 @@ console.log(myCache);
 // Output:
 // { set: [Function],     -- function(key, value)
 //  get: [Function],      -- function(key)
+//  getAll: [Function]    -- function ()
 //  exists: [Function],   -- function(key)
 //  clear: [Function],    -- function()
 //  size: [Function],     -- function()
@@ -74,6 +76,19 @@ memoCache.cache.get('myCache', 'isNotExample'); // => null
 // OR (if using the myCache variable from above):
 myCache.get('isExample'); // => true
 myCache.get('isNotExample'); // => null
+```
+
+#####memoCache.cache.getAll(cacheName)
+* ```cacheName``` String - name of the cache
+
+Return Value: If there are items stored in the cache, they will be returned as a JS document.
+
+```javascript
+memoCache.cache.getAll('myCache'); // => {}
+memoCache.cache.get('notAValidCache'); // => null
+// OR (if using the myCache variable from above):
+myCache.getAll('isExample'); // => {}
+myCache.getAll('notAValidCache'); // => null
 ```
 
 #####memoCache.cache.remove(cacheName, key)
