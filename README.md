@@ -22,8 +22,8 @@ var memoCache = require('memo-cache');
 
 ### API
 
-####Caching:
-#####memoCache.cache.create(cacheName, options)
+#### Caching:
+##### memoCache.cache.create(cacheName, options)
 * ```cacheName``` String - name of the cache
 * ```options``` Object - options for the cache, specifying any of the following:
 * * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
@@ -51,7 +51,7 @@ console.log(myCache);
 //  options: [Function] } -- function()
 ```
 
-#####memoCache.cache.set(cacheName, key, value)
+##### memoCache.cache.set(cacheName, key, value)
 * ```cacheName``` String - name of the cache
 * ```key``` String - key to be used to store the value
 * ```value``` _Any_ - value to be stored in the cache
@@ -64,7 +64,7 @@ memoCache.cache.set('myCache', 'isExample', true);
 myCache.set('isExample', true);
 ```
 
-#####memoCache.cache.get(cacheName, key)
+##### memoCache.cache.get(cacheName, key)
 * ```cacheName``` String - name of the cache
 * ```key``` String - key to be used to retrieve the value
 
@@ -78,7 +78,7 @@ myCache.get('isExample'); // => true
 myCache.get('isNotExample'); // => null
 ```
 
-#####memoCache.cache.getAll(cacheName)
+##### memoCache.cache.getAll(cacheName)
 * ```cacheName``` String - name of the cache
 
 Return Value: If there are items stored in the cache, they will be returned as a JS document.
@@ -91,7 +91,7 @@ myCache.getAll('isExample'); // => {}
 myCache.getAll('notAValidCache'); // => null
 ```
 
-#####memoCache.cache.remove(cacheName, key)
+##### memoCache.cache.remove(cacheName, key)
 * ```cacheName``` String - name of the cache
 * ```key``` String - key to be deleted
 
@@ -105,7 +105,7 @@ myCache.remove('isExample'); // => true
 myCache.remove('isNotExample'); // => null
 ```
 
-#####memoCache.cache.exists(cacheName, key)
+##### memoCache.cache.exists(cacheName, key)
 * ```cacheName``` String - name of the cache
 * ```key``` String - key to be checked
 
@@ -119,7 +119,7 @@ myCache.exists('isExample'); // => true
 myCache.exists('isNotExample'); // => false
 ```
 
-#####memoCache.cache.clear(cacheName)
+##### memoCache.cache.clear(cacheName)
 * ```cacheName``` String - name of the cache
 
 Return Value: If the cache is cleared, then ```true``` is returned, otherwise ```false``` is returned.
@@ -130,7 +130,7 @@ memoCache.cache.clear('myCache'); // => true
 myCache.clear(); // => true
 ```
 
-#####memoCache.cache.size(cacheName)
+##### memoCache.cache.size(cacheName)
 * ```cacheName``` String - (optional) name of the cache; If not specified, the size of all caches is returned
 
 Return Value: The size of the cache(s).
@@ -142,7 +142,7 @@ memoCache.cache.size(); // => 1
 myCache.size(); // => 1
 ```
 
-#####memoCache.cache.options(cacheName)
+##### memoCache.cache.options(cacheName)
 * ```cacheName``` String - name of the cache
 
 Return Value: If the cache exists, then the options object is returned, otherwise ```null``` is returned.
@@ -153,8 +153,8 @@ memoCache.cache.options('myCache'); // => { cloneValues: boolean, maxSize: Numbe
 myCache.options(); // => { cloneValues: boolean, maxSize: Number, memoHashFunction: Function }
 ```
 
-####Memoization:
-#####memoCache.memoize(function, options)
+#### Memoization:
+##### memoCache.memoize(function, options)
 * ```cacheName``` String - name of the cache
 * ```options``` Object - options for the cache, specifying any of the following:
  * ```cloneValues``` Boolean - should returned values be clones of the original? [Default: false]
