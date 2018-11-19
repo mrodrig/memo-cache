@@ -1,4 +1,4 @@
-var should = require('should'),
+let should = require('should'),
     assert = require('assert'),
     _ = require('underscore'),
     memoCache,
@@ -12,15 +12,15 @@ var should = require('should'),
 
 // From stackoverflow, for LRU testing purposes
 function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
+    let start = new Date().getTime();
+    for (let i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds){
             break;
         }
     }
 }
 
-var hashFunction = function (prop, arg1) {
+let hashFunction = function (prop, arg1) {
             if (_.isNull(arg1)) {
                 return 'null';
             } else if (arg1 !== undefined) {
@@ -50,10 +50,10 @@ var hashFunction = function (prop, arg1) {
         memoHashFunction: _.partial(hashFunction, 'val')
     };
 
-var memoizeTests = function () {
+let memoizeTests = function () {
     describe('memoCache.memoize', function () {
         beforeEach(function () {
-            memoCache = require('.././lib/memo-cache');
+            memoCache = require('../src/memo-cache');
 
             cacheMissCounter = 0;
             testFunctionSingleParam = function (param1) {
@@ -80,7 +80,7 @@ var memoizeTests = function () {
         describe('Single Param - Default Options', function () {
             it('should have an empty cache initially', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(0);
                 done();
             });
@@ -89,7 +89,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamDefaultMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
@@ -98,7 +98,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamDefaultMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 testFunctionSingleParamDefaultMemoized('test');
                 cacheMissCounter.should.equal(1);
@@ -107,7 +107,7 @@ var memoizeTests = function () {
 
             it('should clear the function cache when already empty', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(0);
                 testFunctionSingleParamDefaultMemoized.clear();
                 tmp = testFunctionSingleParamDefaultMemoized.size();
@@ -120,7 +120,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamDefaultMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 testFunctionSingleParamDefaultMemoized.clear();
                 tmp = testFunctionSingleParamDefaultMemoized.size();
@@ -130,30 +130,30 @@ var memoizeTests = function () {
             });
 
             it('should not be limited by a max size, tests with 100 calls without sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     testFunctionSingleParamDefaultMemoized(num.toString());
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(NUM_ITERATIONS);
                 done();
             });
 
             it('should not be limited by a max size, tests with 100 calls with sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     sleep(1); // sleep 1 millisecond
                     testFunctionSingleParamDefaultMemoized(num.toString());
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionSingleParamDefaultMemoized.size();
+                let tmp = testFunctionSingleParamDefaultMemoized.size();
                 tmp.should.equal(NUM_ITERATIONS);
                 done();
             });
@@ -162,7 +162,7 @@ var memoizeTests = function () {
         describe('Single Param - Custom Options', function () {
             it('should have an empty cache initially', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(0);
                 done();
             });
@@ -171,7 +171,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamCustomMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
@@ -180,7 +180,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamCustomMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(1);
                 testFunctionSingleParamCustomMemoized('test');
                 cacheMissCounter.should.equal(1);
@@ -189,7 +189,7 @@ var memoizeTests = function () {
 
             it('should clear the function cache when already empty', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(0);
                 testFunctionSingleParamCustomMemoized.clear();
                 tmp = testFunctionSingleParamCustomMemoized.size();
@@ -202,7 +202,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionSingleParamCustomMemoized('test');
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(1);
                 testFunctionSingleParamCustomMemoized.clear();
                 tmp = testFunctionSingleParamCustomMemoized.size();
@@ -212,30 +212,30 @@ var memoizeTests = function () {
             });
 
             it('should be limited by the specified max size, tests with 100 calls without sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     testFunctionSingleParamCustomMemoized(num.toString());
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(customSingleOptions.maxSize);
                 done();
             });
 
             it('should not be limited by a max size, tests with 100 calls with sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     sleep(1); // sleep 1 millisecond
                     testFunctionSingleParamCustomMemoized(num.toString());
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionSingleParamCustomMemoized.size();
+                let tmp = testFunctionSingleParamCustomMemoized.size();
                 tmp.should.equal(customSingleOptions.maxSize);
                 done();
             });
@@ -244,7 +244,7 @@ var memoizeTests = function () {
         describe('Object Param - Default Options', function () {
             it('should have an empty cache initially', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(0);
                 done();
             });
@@ -253,7 +253,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamDefaultMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
@@ -262,7 +262,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamDefaultMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 testFunctionObjectParamDefaultMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
@@ -271,7 +271,7 @@ var memoizeTests = function () {
 
             it('should clear the function cache when already empty', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(0);
                 testFunctionObjectParamDefaultMemoized.clear();
                 tmp = testFunctionObjectParamDefaultMemoized.size();
@@ -284,7 +284,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamDefaultMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 testFunctionObjectParamDefaultMemoized.clear();
                 tmp = testFunctionObjectParamDefaultMemoized.size();
@@ -294,20 +294,20 @@ var memoizeTests = function () {
             });
 
             it('should not be limited by a max size, tests with 100 calls without sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
                     testFunctionObjectParamDefaultMemoized({val: num.toString()});
                     cacheMissCounter.should.equal(1); // Default toString returns [object Object] for hash
                 });
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
 
             it('should not be limited by a max size, tests with 100 calls with sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
                     sleep(1); // sleep 1 millisecond
@@ -315,7 +315,7 @@ var memoizeTests = function () {
                     cacheMissCounter.should.equal(1);
                 });
                 cacheMissCounter.should.equal(1); // Default toString returns [object Object] hash, only 1 val cached
-                var tmp = testFunctionObjectParamDefaultMemoized.size();
+                let tmp = testFunctionObjectParamDefaultMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
@@ -324,7 +324,7 @@ var memoizeTests = function () {
         describe('Object Param - Custom Options', function () {
             it('should have an empty cache initially', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(0);
                 done();
             });
@@ -333,7 +333,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamCustomMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(1);
                 done();
             });
@@ -342,7 +342,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamCustomMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(1);
                 testFunctionObjectParamCustomMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
@@ -351,7 +351,7 @@ var memoizeTests = function () {
 
             it('should clear the function cache when already empty', function (done) {
                 cacheMissCounter.should.equal(0);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(0);
                 testFunctionObjectParamCustomMemoized.clear();
                 tmp = testFunctionObjectParamCustomMemoized.size();
@@ -364,7 +364,7 @@ var memoizeTests = function () {
                 cacheMissCounter.should.equal(0);
                 testFunctionObjectParamCustomMemoized({val : 'test'});
                 cacheMissCounter.should.equal(1);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(1);
                 testFunctionObjectParamCustomMemoized.clear();
                 tmp = testFunctionObjectParamCustomMemoized.size();
@@ -374,30 +374,30 @@ var memoizeTests = function () {
             });
 
             it('should be limited by the specified max size, tests with 100 calls without sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     testFunctionObjectParamCustomMemoized({val:num.toString()});
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(customObjectOptions.maxSize);
                 done();
             });
 
             it('should not be limited by a max size, tests with 100 calls with sleeping', function (done) {
-                var NUM_ITERATIONS = 100;
+                let NUM_ITERATIONS = 100;
                 cacheMissCounter.should.equal(0);
                 _.each(_.range(NUM_ITERATIONS), function (num) {
-                    var tmp = cacheMissCounter;
+                    let tmp = cacheMissCounter;
                     sleep(1); // sleep 1 millisecond
                     testFunctionObjectParamCustomMemoized({val:num.toString()});
                     cacheMissCounter.should.equal(tmp+1);
                 });
                 cacheMissCounter.should.equal(NUM_ITERATIONS);
-                var tmp = testFunctionObjectParamCustomMemoized.size();
+                let tmp = testFunctionObjectParamCustomMemoized.size();
                 tmp.should.equal(customObjectOptions.maxSize);
                 done();
             });

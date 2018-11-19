@@ -1,12 +1,14 @@
-# Node Memoization/Caching Library
+# memo-cache 
 
+**A memoization and caching library for NodeJS.**
+
+[![Dependencies](https://img.shields.io/david/mrodrig/memo-cache.svg?style=flat-square)](https://www.npmjs.org/package/memo-cache)
 [![Build Status](https://travis-ci.org/mrodrig/memo-cache.svg?branch=master)](https://travis-ci.org/mrodrig/memo-cache)
-[![bitHound Dependencies](https://www.bithound.io/github/mrodrig/memo-cache/badges/dependencies.svg)](https://www.bithound.io/github/mrodrig/memo-cache/master/dependencies/npm)
-[![Monthly Downloads](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
+[![Downloads](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 [![NPM version](https://img.shields.io/npm/v/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
-[![bitHound Score](https://www.bithound.io/github/mrodrig/memo-cache/badges/score.svg)](https://www.bithound.io/github/mrodrig/memo-cache)
+[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/memo-cache/maintainability)
+[![Known Vulnerabilities](https://snyk.io/test/npm/memo-cache/badge.svg)](https://snyk.io/test/npm/memo-cache)
 
-A memoization and caching library for NodeJS.
 
 ## Installation
 
@@ -17,7 +19,7 @@ $ npm install memo-cache
 ## Usage
 
 ```javascript
-var memoCache = require('memo-cache');
+let memoCache = require('memo-cache');
 ```
 
 ### API
@@ -39,7 +41,7 @@ Return Value: An object with the following functions to modify the created cache
 * options : function ()
 
 ```javascript
-var myCache = memoCache.cache.create('myCache');
+let myCache = memoCache.cache.create('myCache');
 console.log(myCache);
 // Output:
 // { set: [Function],     -- function(key, value)
@@ -162,10 +164,10 @@ myCache.options(); // => { cloneValues: boolean, maxSize: Number, memoHashFuncti
  * ```memoHashFunction``` Function - used to map the input arguments to a String. The result of this function becomes the key for the function result value
 
 ```javascript
-require memoCache = require('memo-cache');
-var myFunction = function (aString) { console.log('cache miss!'); return aString; };
+let memoCache = require('memo-cache');
+let myFunction = function (aString) { console.log('cache miss!'); return aString; };
 
-var myFunctionMemoized = memoCache.memoize(myFunction, {maxSize: 10});
+let myFunctionMemoized = memoCache.memoize(myFunction, {maxSize: 10});
 myFunctionMemoized('testing'); // => 'testing' (Prints 'cache miss!' to the console)
 myFunctionMemoized('testing'); // => 'testing' (Does not print 'cache miss!')
 ```

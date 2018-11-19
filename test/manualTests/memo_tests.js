@@ -1,4 +1,4 @@
-var memoCache = require('./../../lib/memo-cache'),
+var memoCache = require('../../src/memo-cache'),
     _ = require('underscore');
 
 var myFun = function (param) {
