@@ -1,4 +1,4 @@
-var should = require('should'),
+let should = require('should'),
     assert = require('assert'),
     _ = require('underscore'),
     memoCache,
@@ -7,15 +7,15 @@ var should = require('should'),
 
 // From stackoverflow, for LRU testing purposes
 function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
+    let start = new Date().getTime();
+    for (let i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds){
             break;
         }
     }
 }
 
-var defaultOptions = {
+let defaultOptions = {
         cloneValues : false, // Should values be cloned before storing and before returning them to the caller
         maxSize : null, // The maximum number of keys that should be kept in the cache
         /**
@@ -38,15 +38,15 @@ var defaultOptions = {
         memoHashFunction: defaultOptions.memoHashFunction
     };
 
-var cacheTests = function () {
+let cacheTests = function () {
     describe('memoCache.cache', function () {
         beforeEach(function () {
-            memoCache = require('.././lib/memo-cache');
+            memoCache = require('../src/memo-cache');
         });
 
         describe('Cache Creation', function () {
             it('should create a cache using the default options', function (done) {
-                var myCache = memoCache.cache.create('myCache');
+                let myCache = memoCache.cache.create('myCache');
                 myCache.should.have.property('set');
                 myCache.should.have.property('get');
                 myCache.should.have.property('exists');
@@ -64,7 +64,7 @@ var cacheTests = function () {
             });
 
             it('should create a cache with the specified options', function (done) {
-                var myCache = memoCache.cache.create('myCache', customOptions);
+                let myCache = memoCache.cache.create('myCache', customOptions);
                 myCache.should.have.property('set');
                 myCache.should.have.property('get');
                 myCache.should.have.property('exists');
@@ -90,7 +90,7 @@ var cacheTests = function () {
 
             describe('set and get', function () {
                 it('should set and get a value in the cache - via library functions', function (done) {
-                    var tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
+                    let tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = memoCache.cache.get('testCache', 'testKey');
                     tmp.should.equal('testValue');
@@ -98,7 +98,7 @@ var cacheTests = function () {
                 });
 
                 it('should set and get a value in the cache - via cache functions', function (done) {
-                    var tmp = testCache.set('testKey', 'testValue');
+                    let tmp = testCache.set('testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = testCache.get('testKey');
                     tmp.should.equal('testValue');
@@ -107,7 +107,7 @@ var cacheTests = function () {
 
                 it('should return null when set is not provided correct info', function (done) {
                     // Using memoCache.cache functions
-                    var tmp = memoCache.cache.set('cacheThatDoesntExist', 'testKey', 'testValue');
+                    let tmp = memoCache.cache.set('cacheThatDoesntExist', 'testKey', 'testValue');
                     assert.equal(tmp, null);
                     tmp = memoCache.cache.set('testCache', 'testKey'); // No value
                     assert.equal(tmp, null);
@@ -125,7 +125,7 @@ var cacheTests = function () {
 
                 it('should return null when get is called without correct info', function (done) {
                     // Using memoCache.cache functions
-                    var tmp = memoCache.cache.get('keyThatDoesntExist');
+                    let tmp = memoCache.cache.get('keyThatDoesntExist');
                     assert.equal(tmp, null);
                     tmp = memoCache.cache.get();
                     assert.equal(tmp, null);
@@ -138,7 +138,7 @@ var cacheTests = function () {
                 });
 
                 it('should get the value via cache functions when set - via library functions', function (done) {
-                    var tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
+                    let tmp = memoCache.cache.set('testCache', 'testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = testCache.get('testKey');
                     tmp.should.equal('testValue');
@@ -146,7 +146,7 @@ var cacheTests = function () {
                 });
 
                 it('should get the value via library functions when set - via cache functions', function (done) {
-                    var tmp = testCache.set('testKey', 'testValue');
+                    let tmp = testCache.set('testKey', 'testValue');
                     tmp.should.equal('testValue');
                     tmp = memoCache.cache.get('testCache', 'testKey');
                     tmp.should.equal('testValue');
@@ -155,7 +155,7 @@ var cacheTests = function () {
                 
                 it('getAll should get an entire cache', function (done) {
                     testCache.set('testKey', 'testValue');
-                    var cache = testCache.getAll();
+                    let cache = testCache.getAll();
                     cache == {testKey: 'testValue'};
                     
                     testCache.set('testKey2', 'testValue2');
@@ -167,7 +167,7 @@ var cacheTests = function () {
 
                 it('should clone the values returned - set - via library functions', function (done) {
                     // When cloning:
-                    var tmp = memoCache.cache.set('lruCache', 'testKey', {test:'value'});
+                    let tmp = memoCache.cache.set('lruCache', 'testKey', {test:'value'});
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
                     tmp.badValue = 'fail'; // try modifying the cached object
                     tmp = memoCache.cache.get('lruCache', 'testKey');
@@ -185,7 +185,7 @@ var cacheTests = function () {
 
                 it('should clone the values returned - set - via cache functions', function (done) {
                     // When cloning:
-                    var tmp = lruCache.set('testKey', {test:'value'});
+                    let tmp = lruCache.set('testKey', {test:'value'});
                     JSON.stringify(tmp).should.equal(JSON.stringify({test:'value'}));
                     tmp.badValue = 'fail'; // try modifying the cached object
                     tmp = lruCache.get('testKey');
@@ -202,8 +202,8 @@ var cacheTests = function () {
                 });
 
                 it('should perform the LRU algorithm when the maxSize is exceeded - via library functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = memoCache.cache.size('lruCache');
+                    let NUM_ITERATIONS = 100;
+                    let tmp = memoCache.cache.size('lruCache');
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         memoCache.cache.set('lruCache', num.toString(), num.toString());
@@ -214,8 +214,8 @@ var cacheTests = function () {
                 });
 
                 it('should perform the LRU algorithm when the maxSize is exceeded - via cache functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = lruCache.size();
+                    let NUM_ITERATIONS = 100;
+                    let tmp = lruCache.size();
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         lruCache.set(num.toString(), num.toString());
@@ -226,8 +226,8 @@ var cacheTests = function () {
                 });
 
                 it('should perform the LRU algorithm with sleep when the maxSize is exceeded - via library functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = memoCache.cache.size('lruCache');
+                    let NUM_ITERATIONS = 100;
+                    let tmp = memoCache.cache.size('lruCache');
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         sleep(1); // sleep for 5 millisecond
@@ -239,8 +239,8 @@ var cacheTests = function () {
                 });
 
                 it('should perform the LRU algorithm with sleep when the maxSize is exceeded - via cache functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = lruCache.size();
+                    let NUM_ITERATIONS = 100;
+                    let tmp = lruCache.size();
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         sleep(1); // sleep for 1 millisecond
@@ -258,13 +258,13 @@ var cacheTests = function () {
                 });
 
                 it('should return true if the cache has a value at the key', function (done) {
-                    var tmp = testCache.exists('testKey');
+                    let tmp = testCache.exists('testKey');
                     tmp.should.equal(tmp, true);
                     done();
                 });
 
                 it('should return false if the cache has no value at the key', function (done) {
-                    var tmp = testCache.exists('nonExistentKey');
+                    let tmp = testCache.exists('nonExistentKey');
                     tmp.should.equal(tmp, false);
                     done();
                 });
@@ -273,7 +273,7 @@ var cacheTests = function () {
             describe('size', function () {
                 it('should read a size of 0 before any cache modifications', function (done) {
                     // Test library functions
-                    var tmp = memoCache.cache.size('testCache');
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     // Test cache functions
                     tmp = testCache.size();
@@ -283,7 +283,7 @@ var cacheTests = function () {
 
                 it('should read the correct size when items are added', function (done) {
                     // Test library functions
-                    var tmp = memoCache.cache.size('testCache');
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     memoCache.cache.set('testCache', 'testKey', 'testValue');
                     tmp = memoCache.cache.size('testCache');
@@ -299,7 +299,7 @@ var cacheTests = function () {
 
                 it('should read the correct size after the cache is cleared', function (done) {
                     // Test library functions
-                    var tmp = memoCache.cache.size('testCache');
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     memoCache.cache.set('testCache', 'testKey', 'testValue');
                     memoCache.cache.set('testCache', 'testKey2', 'testValue2');
@@ -322,8 +322,8 @@ var cacheTests = function () {
                 });
 
                 it('should add 100 items and read the correct size - via library functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = memoCache.cache.size('testCache');
+                    let NUM_ITERATIONS = 100;
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         memoCache.cache.set('testCache', num.toString(), num.toString());
@@ -334,8 +334,8 @@ var cacheTests = function () {
                 });
 
                 it('should add 100 items and read the correct size - via cache functions', function (done) {
-                    var NUM_ITERATIONS = 100;
-                    var tmp = testCache.size('testCache');
+                    let NUM_ITERATIONS = 100;
+                    let tmp = testCache.size('testCache');
                     tmp.should.equal(0);
                     _.each(_.range(NUM_ITERATIONS), function (num) {
                         testCache.set(num.toString(), num.toString());
@@ -349,7 +349,7 @@ var cacheTests = function () {
             describe('clear', function () {
                 it('should clear an empty cache and have a size of 0', function (done) {
                     // Test library functions
-                    var tmp = memoCache.cache.size('testCache');
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     memoCache.cache.clear('testCache');
                     tmp = memoCache.cache.size('testCache');
@@ -365,7 +365,7 @@ var cacheTests = function () {
 
                 it('should clear a non-empty cache and have a size of 0', function (done) {
                     // Test library functions
-                    var tmp = memoCache.cache.size('testCache');
+                    let tmp = memoCache.cache.size('testCache');
                     tmp.should.equal(0);
                     memoCache.cache.set('testCache', 'testKey', 'testValue');
                     memoCache.cache.set('testCache', 'testKey2', 'testValue2');
@@ -398,7 +398,7 @@ var cacheTests = function () {
 
             describe('options', function () {
                 it('should retrieve the options from a cache that does exist', function (done) {
-                    var tmp = memoCache.cache.options('testCache');
+                    let tmp = memoCache.cache.options('testCache');
                     JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
                     tmp = testCache.options();
                     JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
@@ -406,7 +406,7 @@ var cacheTests = function () {
                 });
 
                 it('should allow options to be modified by reference - via library functions', function (done) {
-                    var tmp = memoCache.cache.options('testCache');
+                    let tmp = memoCache.cache.options('testCache');
                     JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
                     tmp.cloneValues = true;
                     tmp.maxSize = 5;
@@ -416,7 +416,7 @@ var cacheTests = function () {
                 });
 
                 it('should allow options to be modified by reference - via cache functions', function (done) {
-                    var tmp = testCache.options();
+                    let tmp = testCache.options();
                     JSON.stringify(tmp).should.equal(JSON.stringify(defaultOptions));
                     tmp.cloneValues = true;
                     tmp.maxSize = 5;
@@ -426,7 +426,7 @@ var cacheTests = function () {
                 });
 
                 it('should return null if the cache does not exist', function (done) {
-                    var tmp = memoCache.cache.options('cacheThatDoesntExist');
+                    let tmp = memoCache.cache.options('cacheThatDoesntExist');
                     assert.equal(tmp, null);
                     done();
                 });

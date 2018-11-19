@@ -1,13 +1,13 @@
 'use strict';
 
-var _ = require('underscore'); // Require underscore
+let _ = require('underscore'); // Require underscore
 
 /** PROTOTYPES **/
 // http://stackoverflow.com/questions/1833588/javascript-clone-a-function
 Function.prototype.clone = function() {
-    var currentFn = this;
-    var cloneFn = function temporary() { return currentFn.apply(this, arguments); };
-    for(var key in this) {
+    let currentFn = this;
+    let cloneFn = function temporary() { return currentFn.apply(this, arguments); };
+    for(let key in this) {
         if (this.hasOwnProperty(key)) {
             cloneFn[key] = this[key];
         }
@@ -24,20 +24,20 @@ Function.prototype.clone = function() {
  *  }
  * @type {Object}
  */
-var caches = {};
+let caches = {};
 
 /**
  * Counter which keeps track of the number of functions that are being memoized
  * This allows us to utilize the built-in caching functionality and just generate a
  *   cache specific to this function, while not having any name information about it
  */
-var memoizedFunctionCounter = 0;
+let memoizedFunctionCounter = 0;
 
 /**
  * Default options for both the cache and memoization functionality
  * @type {Object}
  */
-var defaultOptions = {
+let defaultOptions = {
     cloneValues : false, // Should values be cloned before storing and before returning them to the caller
     maxSize : null, // The maximum number of keys that should be kept in the cache
     /**
@@ -59,7 +59,7 @@ var defaultOptions = {
  * Client Accessible Functions
  * @type {{cache: Object, memoize: Function}}
  */
-var controller = {
+let controller = {
     /**
      * Client accessible caching functions
      * These are all synchronous as it is important to ensure that the cache is updated in real-time
@@ -118,20 +118,20 @@ var controller = {
         // Generate the options by merging in the default options
         options = _.defaults(options || {}, defaultOptions);
         // Generate the function's cache name of the form: __function0
-        var functionCacheName = '__function' + memoizedFunctionCounter++,
+        let functionCacheName = '__function' + memoizedFunctionCounter++,
         // Create the cache for this function
             cache = controller.cache.create(functionCacheName, options);
 
         // Memoized function to be returned to the client
-        var memoizedFn = function (hashValue) {
+        let memoizedFn = function (hashValue) {
             // Retrieve a reference to the created cache that the client can access
-            var fnCache = cache;
+            let fnCache = cache;
             // Generate the hashValue, or key to store the function result at
             hashValue = options.memoHashFunction.apply(this, arguments);
             // If the cache does not already have the stored result, compute it and store it
             if (!fnCache.exists(hashValue)) {
                 // Compute the result
-                var result = fn.apply(this, arguments);
+                let result = fn.apply(this, arguments);
                 // Store the result, or a clone if specified
                 fnCache.set(hashValue, options.clone ? clone(result) : result);
             }
@@ -150,7 +150,7 @@ var controller = {
 };
 
 /** Internal Cache Operators **/
-var cacheOps = {
+let cacheOps = {
     /**
      * Create the cache with the given cacheName
      * Returns an object with functions that will perform operations directly on the cache with the given cacheName
@@ -207,7 +207,7 @@ var cacheOps = {
     get : function (cacheName, key) {
         if (cacheName && key && caches[cacheName] && caches[cacheName].cache && caches[cacheName].cache[key]) {
             caches[cacheName].cache[key].lastAccess = new Date().getTime(); // Update the last access time
-            var value = caches[cacheName].cache[key].value; // Retrieve the value
+            let value = caches[cacheName].cache[key].value; // Retrieve the value
             return caches[cacheName].options.cloneValues ? clone(value) : value;
         }
         return null;
@@ -219,7 +219,7 @@ var cacheOps = {
      */
     getAll : function (cacheName) {
         if (cacheName && caches[cacheName] && caches[cacheName].cache) {
-            var cache = caches[cacheName].cache; // Retrieve the cache
+            let cache = caches[cacheName].cache; // Retrieve the cache
             return _.mapObject(cache, function (valDoc, key) {
                 return valDoc.value;
             });
@@ -235,7 +235,7 @@ var cacheOps = {
      */
     remove : function (cacheName, key) {
         if (cacheName && key && caches[cacheName] && caches[cacheName].cache && caches[cacheName].cache[key]) {
-            var value = caches[cacheName].cache[key].value;
+            let value = caches[cacheName].cache[key].value;
             delete caches[cacheName].cache[key];
             return value;
         }
@@ -304,7 +304,7 @@ var cacheOps = {
  * @param value
  * @returns {*} a new deep copy of the value that was passed in
  */
-var clone = function (value) {
+let clone = function (value) {
     if (_.isFunction(value)) {
         return value.clone();
     } else if (_.isDate(value)) {
@@ -324,9 +324,9 @@ var clone = function (value) {
  * @param cacheName String name of the cache
  * @returns {boolean} was the algorithm performed
  */
-var performLeastRecentlyUsed = function (cacheName) {
+let performLeastRecentlyUsed = function (cacheName) {
     // Retrieves the maxSize option from the options
-    var maxSize = cacheOps.options(cacheName).maxSize,
+    let maxSize = cacheOps.options(cacheName).maxSize,
     // Retrieves the current size of the cache with the given cacheName
         size = cacheOps.size(cacheName),
     // Variables to identify the least recently used entry in the cache
@@ -339,7 +339,7 @@ var performLeastRecentlyUsed = function (cacheName) {
         // Find least recently used item (key and access time)
         _.each(_.keys(caches[cacheName].cache), function (cacheEntryKey) {
             // Retrieve the value for the given cacheEntryKey
-            var cacheEntryValue = caches[cacheName].cache[cacheEntryKey];
+            let cacheEntryValue = caches[cacheName].cache[cacheEntryKey];
             // If this entry was used less recently than the current entry
             if (cacheEntryValue.lastAccess <= leastRecentlyUsed.lastAccess) {
                 // Set this entry as the least recently used item
