@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/mrodrig/memo-cache.svg?branch=master)](https://travis-ci.org/mrodrig/memo-cache)
 [![Downloads](http://img.shields.io/npm/dm/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
 [![NPM version](https://img.shields.io/npm/v/memo-cache.svg)](https://www.npmjs.org/package/memo-cache)
-[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/memo-cache/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dda802b0e83fec47aa95/maintainability)](https://codeclimate.com/github/mrodrig/memo-cache/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/npm/memo-cache/badge.svg)](https://snyk.io/test/npm/memo-cache)
 
 
